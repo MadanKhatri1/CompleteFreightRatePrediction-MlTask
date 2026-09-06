@@ -9,7 +9,7 @@
 </div>
 
 <p align="center">
-  A machine learning project that trains an ensemble regression model and generates predicted freight rates for unseen shipping loads.
+  A machine learning project that trains an ensemble regression model and generates predicted freight rates for unseen shipping loads. Achieved an RMSE of 526.4839, representing a 5.73% reduction in error compared to the baseline model.
 </p>
 
 ## 📝 Table of Contents
@@ -81,7 +81,10 @@ The final model is built in two stages. First, multiple base models are trained 
 - **Linear Regression**
 - **RealMLP**
 
-Out-of-fold predictions are generated for each base model. These predictions are then passed to a **RidgeCV meta-model**, which learns how to combine the individual model outputs into one final freight-rate prediction.
+Out-of-fold predictions are generated for each base model. These predictions are then passed to a RidgeCV meta-model, which learns how to combine the individual model outputs into one final freight-rate prediction, achieving an RMSE of 526.4839—a 5.73% reduction in error compared to the baseline model's RMSE of 558.5001.
+
+These were the meta model weights 
+<img width="760" height="238" alt="image" src="https://github.com/user-attachments/assets/c69a0053-2546-4142-94dd-788456679e62" />
 
 The complete ensemble is saved in:
 
