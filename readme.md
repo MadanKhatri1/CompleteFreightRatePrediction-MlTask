@@ -74,14 +74,14 @@ During prediction, the fitted encoder stored inside the pipeline is used to tran
 
 ### 3. Stacking Ensemble
 
-The final model combines predictions from multiple base models:
+The final model is built in two stages. First, multiple base models are trained on the target-encoded features:
 
 - **XGBoost**
 - **LightGBM**
 - **Linear Regression**
 - **RealMLP**
 
-The predictions from these models are passed to a **RidgeCV meta-model**. The meta-model learns how to combine the individual predictions into one final freight-rate prediction.
+Out-of-fold predictions are generated for each base model. These predictions are then passed to a **RidgeCV meta-model**, which learns how to combine the individual model outputs into one final freight-rate prediction.
 
 The complete ensemble is saved in:
 
@@ -107,3 +107,87 @@ The prediction process follows these steps:
 8. Save the final prediction files.
 
 ## Installation <a name="Installation"></a>
+
+### 1. Create a Virtual Environment
+
+Using Python:
+
+```bash
+python -m venv Projeenv
+```
+
+Using Conda:
+
+```bash
+conda create --name Projeenv python=3.12
+```
+
+### 2. Activate the Virtual Environment
+
+Using Python:
+
+```bash
+Projeenv\Scripts\activate
+```
+
+Using Conda:
+
+```bash
+conda activate Projeenv
+```
+
+### 3. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+## Running the Project
+
+1. Run all cells in `modeltraining.ipynb` to train the models and create `stacking_ensemble_pipeline.pkl`.
+2. Run all cells in `generate_prediction.ipynb` to generate predictions.
+3. Validate the generated files using:
+
+```bash
+python score.py --predictions validation_predictions.csv --december-predictions data/december-chart-inputs.csv
+```
+
+## Usage <a name="usage"></a>
+
+The generated prediction files are:
+
+- `validation_predictions.csv` for the validation dataset
+- `data/december-chart-inputs.csv` for the December 2025 predictions
+
+The scoring script validates the prediction format and creates a December prediction chart in the `scorer_results` directory.
+
+## Technology Stack <a name="tech_stack"></a>
+
+- Python 3.12
+- Pandas and NumPy for data processing
+- Scikit-learn for preprocessing and model evaluation
+- Linear Regression for modeling the baseline linear relationship and base model
+- RidgeCV for combining the base-model predictions in the stacking ensemble
+- XGBoost and LightGBM for gradient-boosting models
+- RealMLP for neural-network-based tabular regression
+- Joblib for saving and loading the trained pipeline
+- Matplotlib for prediction visualization
+
+## Contributing <a name="contributing"></a>
+
+Contributions are welcome. Create a new branch, make your changes, and open a pull request with a clear description of the improvement.
+
+## Authors <a name="authors"></a>
+
+- [@MadanKhatri1](https://github.com/MadanKhatri1) 
+
+
+## Acknowledgments <a name="acknowledgments"></a>
+
+Thanks to the open-source Python and machine-learning communities for the libraries used in this project.
+
+Special thanks to [Mahog](https://www.kaggle.com/mahoganybuttstrings) for the helpful Kaggle solution writeup and notebook. The feature-engineering, target-encoding, and ensemble-modeling ideas from the writeup were valuable references while developing this freight-rate prediction project.
+
+You can find the original Kaggle solution here:
+
+- [1st Place solution](https://www.kaggle.com/competitions/playground-series-s6e1/writeups/1st-place-ive-ran-out-of-catchy-phrases-v)
